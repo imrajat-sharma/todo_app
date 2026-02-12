@@ -11,6 +11,10 @@ exports.register = async (req, res) => {
       profileImage: req.file ? req.file.filename : null,
     });
 
+    if (!req.file) {
+      return res.status(400).send({ message: "Please upload a file." });
+    }
+
     res.status(201).json({
       success: true,
       message: "User registered successfully",
@@ -82,4 +86,4 @@ exports.logout = async (req, res) => {
   });
   res.clearCookie("connect.sid");
   res.redirect("/api/auth/login");
-}
+};
