@@ -80,5 +80,6 @@ exports.logout = async (req, res) => {
       });
     }
   });
+  res.clearCookie("connect.sid");
   res.redirect("/api/auth/login");
 }
