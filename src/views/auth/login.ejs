@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - Todo App</title>
+</head>
+<body style="background-color: black;">
+    <h1 style="text-align: center; color: white;">Login to Your Account</h1>
+    <div style="text-align: center; margin-top: 20px;">
+        <form action="/api/auth/login" method="POST" style="display: inline-block; text-align: left; color: white;">
+            <div style="margin-bottom: 10px;">
+                <label for="email">Email:</label><br>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div style="margin-bottom: 10px;">
+                <label for="password">Password:</label><br>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div style="text-align: center;">
+                <button type="submit" style="background-color: white; color: black; padding: 5px 10px; border: none; cursor: pointer;">Login</button>
+            </div>
+        </form>
+    
+</body>
+</html>

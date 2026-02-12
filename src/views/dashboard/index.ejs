@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+</head>
+<body>
+    <h2>Welcome <%= user.name %> </h2>
+<% if (user.profileImage) { %>
+    <img 
+      src="/uploads/<%= user.profileImage %>" 
+      alt="Profile Image" 
+      style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;"
+    />
+<% } else { %>
+    <p>No profile image uploaded</p>
+<% } %>
+    <h3>Your Profile Information</h3>
+    <p>Email: <%= user.email %></p>
+    <p>Username: <%= user.username %></p>
+    <div style="width: 60px; height: 60px; background-color: #ccc; border-radius: 20px;"></div>
+        <a href="/api/auth/logout">Logout</a>
+    </div>
+</body>
+</html>

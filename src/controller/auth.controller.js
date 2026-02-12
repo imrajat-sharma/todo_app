@@ -1,19 +1,26 @@
 const User = require("../model/user.model");
 
 exports.register = async (req, res) => {
-  const { name, username, email, password } = req.body;
+  const { name, username, email, password, profileImage } = req.body;
   try {
     const user = await User.create({
       name,
       email,
       username,
       password,
+      profileImage: req.file ? req.file.filename : null,
     });
 
     res.status(201).json({
       success: true,
       message: "User registered successfully",
-      user: user,
+      user: {
+        id: user._id,
+        name: user.name,
+        username: user.username,
+        email: user.email,
+        profileImage: user.profileImage,
+      },
     });
   } catch (error) {
     res.status(500).json({
@@ -41,11 +48,19 @@ exports.login = async (req, res) => {
         message: "Invalid credentials",
       });
     }
-    res.status(200).json({
-      success: true,
-      message: "User logged in successfully",
-      user: user,
-    });
+    req.session.userId = user._id;
+    res.redirect("/dashboard");
+    // res.status(200).json({
+    //   success: true,
+    //   message: "User logged in successfully",
+    //   user: {
+    //     id: user._id,
+    //     name: user.name,
+    //     username: user.username,
+    //     email: user.email,
+    //     profileImage: user.profileImage,
+    //   },
+    // });
   } catch (error) {
     res.status(500).json({
       success: false,
@@ -54,3 +69,16 @@ exports.login = async (req, res) => {
     });
   }
 };
+
+exports.logout = async (req, res) => {
+  await req.session.destroy((err) => {
+    if (err) {
+      return res.status(500).json({
+        success: false,
+        message: "Error logging out user",
+        error: err.message,
+      });
+    }
+  });
+  res.redirect("/api/auth/login");
+}
