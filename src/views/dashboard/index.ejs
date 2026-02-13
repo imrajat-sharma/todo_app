@@ -1,26 +1,31 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.7.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
     <title>Dashboard</title>
 </head>
-<body>
-    <h2>Welcome <%= user.name %> </h2>
-<% if (user.profileImage) { %>
-    <img 
-      src="/uploads/<%= user.profileImage %>" 
-      alt="Profile Image" 
-      style="width: 150px; height: 150px; border-radius: 50%; object-fit: cover;"
-    />
-<% } else { %>
-    <p>No profile image uploaded</p>
-<% } %>
-    <h3>Your Profile Information</h3>
-    <p>Email: <%= user.email %></p>
-    <p>Username: <%= user.username %></p>
-    <div style="width: 60px; height: 60px; background-color: #ccc; border-radius: 20px;"></div>
-        <a href="/api/auth/logout">Logout</a>
+<body style="background-color: rgb(184, 184, 184);">
+    
+    <div class="container">
+        <h2>Welcome <%= user.name %> </h2>
+        <div class="card" style=" color: aliceblue; background-color: rgb(20, 26, 38); width:200px">
+            <% if(user.profileImage) { %>
+            <img class="card-img-top" src="uploads/<%= user.profileImage %>" alt="Card image" style="width: 100%; object-fit: cover;">
+            <% } else { %>
+            <p>No profile image</p>
+            <% } %>
+            <div class="card-body">
+                <h4 class="card-title"><%= user.name %></h4>
+                <p class="card-text">
+                <p> Email: <%= user.username %></p>
+                <p> Email: <%= user.email %></p>
+                <a href="/api/auth/logout" class="btn btn-primary">logout</a>
+            </div>
+        </div>
     </div>
 </body>
 </html>

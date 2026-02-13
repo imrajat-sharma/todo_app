@@ -74,8 +74,13 @@ exports.login = async (req, res) => {
   }
 };
 
-exports.logout = async (req, res) => {
-  await req.session.destroy((err) => {
+exports.logout = (req, res) => {
+  if (!req.session) {
+    res.clearCookie("connect.sid");
+    return res.redirect("/api/auth/login");
+  }
+
+  req.session.destroy((err) => {
     if (err) {
       return res.status(500).json({
         success: false,
@@ -83,7 +88,8 @@ exports.logout = async (req, res) => {
         error: err.message,
       });
     }
+
+    res.clearCookie("connect.sid");
+    res.redirect("/api/auth/login");
   });
-  res.clearCookie("connect.sid");
-  res.redirect("/api/auth/login");
 };
