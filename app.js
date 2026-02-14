@@ -27,7 +27,9 @@ app.use(session({
 
 app.use("/api/auth", authRoutes);
 app.use("/api/todo", todoRoutes);
-app.use(dashboardRoutes);
+app.use("/dashboard", dashboardRoutes);
+
+
 
 app.get("/", (req, res) => {
   res.render("index");
