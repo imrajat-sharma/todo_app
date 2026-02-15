@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Reset - Todo App</title>
+</head>
+
+<body style="background-color: black;">
+  <h1 style="text-align: center; color: white;">Reset Your Password</h1>
+  <div style="text-align: center; margin-top: 20px;">
+    <form action="/api/auth/reset" method="POST" style="display: inline-block; text-align: left; color: white;">
+      <div style="margin-bottom: 10px;">
+        <label for="email">Enter registered email:</label><br>
+        <input type="email" id="email" name="email" required>
+      </div>
+      <div style="margin-bottom: 10px;">
+        <label for="password">Enter new password:</label><br>
+        <input type="password" id="password" name="password" required>
+      </div>
+      <div style="text-align: center;">
+        <button type="submit" style="background-color: white; color: black; padding: 5px 10px; border: none; cursor: pointer;">Update</button>
+      </div>
+    </form>
+    <br>
+    <p>click here for register..</p>
+    <a style="display: inline-block; border: 1ox dotted blanchedalmond; padding: 10px 15px ; 
+        border-radius: 15px; margin-left: 10px;
+        background-color: #f1f1f1; text-decoration: none;" href="/api/auth/register">signup</a>
+
+    <a style="display: inline-block; border: 1ox dotted blanchedalmond; padding: 10px 15px ; 
+        border-radius: 15px; margin-left: 10px;
+        background-color: #f1f1f1; text-decoration: none;" href="/api/auth/login">login</a>
+
+</body>
+
+</html>

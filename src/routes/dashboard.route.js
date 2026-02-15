@@ -9,7 +9,11 @@ router.get("/", async (req, res) => {
 
   const user = await User.findById(req.session.userId).select("-password");
 
-  res.render("dashboard", { user });
+  if (req.session?.message || req.session.userId) {
+    res.render("dashboard", { user, message: req.session.message });
+  } else {
+    res.render("dashboard", { user });
+  }
 });
 
 router.patch("/update/:userid", async (req, res) => {

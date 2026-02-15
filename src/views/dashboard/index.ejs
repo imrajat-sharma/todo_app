@@ -11,6 +11,10 @@
 <body style="background-color: rgb(184, 184, 184);">
     
     <div class="container">
+        <% if (message) { %>
+            <h2 style="color: green; background-color: #77d88b; display: block; border: 2px solid #11541e; height: 50; width: 100; text-align: center;"> <%= message %> </h2>
+        <% } %>
+
         <h2>Welcome <%= user.name %> </h2>
         <div class="card" style=" color: aliceblue; background-color: rgb(20, 26, 38); width:200px">
             <% if(user.profileImage) { %>

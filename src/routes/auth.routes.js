@@ -20,6 +20,11 @@ router
 
 router.get("/logout", authController.logout)
 
+router.post("/reset", authController.resetPassword)
+router.get("/reset",(req, res) => {
+  res.render("auth/reset")
+})
+
 
 
 module.exports = router;

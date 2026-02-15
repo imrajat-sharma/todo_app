@@ -20,6 +20,7 @@ app.set("view engine", "ejs");
 app.set("views", __dirname + "/src/views");
 
 app.use(session({
+  name: "sessions",
   secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: false
