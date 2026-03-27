@@ -1,30 +1,20 @@
 const express = require("express");
-const router = express.Router();
+
 const authController = require("../controller/auth.controller");
+const { authenticate, redirectIfAuthenticated } = require("../middleware/Auth");
 const upload = require("../middleware/upload");
 
+const router = express.Router();
 
-router
-  .route("/register")
-  .get((req, res) => {
-    res.render("auth/register");
-  })
-  .post(upload.single("profileImage"), authController.register);
+router.get("/register", redirectIfAuthenticated, authController.registerPage);
+router.post("/register", redirectIfAuthenticated, upload.single("profileImage"), authController.register);
 
-router
-  .route("/login")
-  .get((req, res) => {
-    res.render("auth/login");
-  })
-  .post(authController.login);
+router.get("/login", redirectIfAuthenticated, authController.loginPage);
+router.post("/login", redirectIfAuthenticated, authController.login);
+router.get("/reset", redirectIfAuthenticated, authController.resetPage);
 
-router.get("/logout", authController.logout)
-
-router.post("/reset", authController.resetPassword)
-router.get("/reset",(req, res) => {
-  res.render("auth/reset")
-})
-
-
+router.post("/refresh", authController.refreshSession);
+router.post("/logout", authenticate, authController.logout);
+router.post("/password", authenticate, authController.updatePassword);
 
 module.exports = router;

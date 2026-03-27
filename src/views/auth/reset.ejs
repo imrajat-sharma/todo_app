@@ -1,38 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Reset - Todo App</title>
-</head>
-
-<body style="background-color: black;">
-  <h1 style="text-align: center; color: white;">Reset Your Password</h1>
-  <div style="text-align: center; margin-top: 20px;">
-    <form action="/api/auth/reset" method="POST" style="display: inline-block; text-align: left; color: white;">
-      <div style="margin-bottom: 10px;">
-        <label for="email">Enter registered email:</label><br>
-        <input type="email" id="email" name="email" required>
+  <head>
+    <%- include("../partials/head", { title: "Password update" }) %>
+  </head>
+  <body class="min-h-screen bg-canvas text-ink">
+    <main class="mx-auto flex min-h-screen max-w-3xl items-center justify-center px-5 py-10 sm:px-6">
+      <div class="w-full rounded-[2rem] border border-line bg-panel p-8 text-center shadow-panel">
+        <h1 class="text-3xl font-extrabold text-ink">Password management now lives inside the dashboard.</h1>
+        <p class="mt-4 text-muted">
+          Sign in to update your credentials securely from the authenticated account settings section.
+        </p>
+        <div class="mt-8 flex justify-center gap-4">
+          <a href="/auth/login" class="rounded-2xl bg-stone-900 px-5 py-3 font-semibold text-stone-50 transition hover:bg-stone-700">Sign in</a>
+          <a href="/auth/register" class="rounded-2xl border border-line bg-white px-5 py-3 font-semibold text-ink transition hover:bg-stone-100">Create account</a>
+        </div>
       </div>
-      <div style="margin-bottom: 10px;">
-        <label for="password">Enter new password:</label><br>
-        <input type="password" id="password" name="password" required>
-      </div>
-      <div style="text-align: center;">
-        <button type="submit" style="background-color: white; color: black; padding: 5px 10px; border: none; cursor: pointer;">Update</button>
-      </div>
-    </form>
-    <br>
-    <p>click here for register..</p>
-    <a style="display: inline-block; border: 1ox dotted blanchedalmond; padding: 10px 15px ; 
-        border-radius: 15px; margin-left: 10px;
-        background-color: #f1f1f1; text-decoration: none;" href="/api/auth/register">signup</a>
-
-    <a style="display: inline-block; border: 1ox dotted blanchedalmond; padding: 10px 15px ; 
-        border-radius: 15px; margin-left: 10px;
-        background-color: #f1f1f1; text-decoration: none;" href="/api/auth/login">login</a>
-
-</body>
-
+    </main>
+  </body>
 </html>

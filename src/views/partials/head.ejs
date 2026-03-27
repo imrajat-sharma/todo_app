@@ -1,0 +1,33 @@
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title><%= title || "TaskFlow" %></title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    theme: {
+      extend: {
+        fontFamily: {
+          sans: ["Manrope", "ui-sans-serif", "system-ui", "sans-serif"],
+        },
+        boxShadow: {
+          panel: "0 18px 40px rgba(15, 23, 42, 0.08)",
+        },
+        colors: {
+          canvas: "#f5f3ee",
+          panel: "#fcfbf8",
+          line: "#ddd7cd",
+          ink: "#201f1d",
+          muted: "#6b665d",
+          accent: "#6f7d58",
+          accentDark: "#556246",
+          warn: "#b7791f",
+          success: "#4a7c59",
+          danger: "#b65d4a",
+        },
+      },
+    },
+  };
+</script>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />

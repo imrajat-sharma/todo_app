@@ -1,32 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login - Todo App</title>
-</head>
-<body style="background-color: black;">
-    <h1 style="text-align: center; color: white;">Login to Your Account</h1>
-    <div style="text-align: center; margin-top: 20px;">
-        <form action="/api/auth/login" method="POST" style="display: inline-block; text-align: left; color: white;">
-            <div style="margin-bottom: 10px;">
-                <label for="email">Email:</label><br>
-                <input type="email" id="email" name="email" required>
+  <head>
+    <%- include("../partials/head", { title }) %>
+  </head>
+  <body class="min-h-screen bg-canvas text-ink">
+    <main class="mx-auto flex min-h-screen max-w-7xl flex-col px-5 py-6 sm:px-6">
+      <%- include("../partials/navbar", { currentPath, currentUser }) %>
+
+      <section class="mx-auto grid w-full max-w-5xl flex-1 gap-6 py-8 lg:grid-cols-[0.95fr_1.05fr]">
+        <div class="rounded-[2rem] border border-line bg-panel p-6 shadow-panel sm:p-8">
+          <p class="text-sm font-semibold uppercase tracking-[0.24em] text-muted">Workspace access</p>
+          <h1 class="mt-4 text-4xl font-extrabold tracking-tight text-ink">Pick up where you left off.</h1>
+          <p class="mt-4 max-w-lg text-base leading-7 text-muted">
+            Open your task workspace, review what is due, and move the next item forward. Simple, practical, and built for daily use.
+          </p>
+
+          <div class="mt-8 space-y-3">
+            <div class="rounded-2xl border border-line bg-white p-4">
+              <p class="text-sm text-muted">What you get</p>
+              <p class="mt-1 font-semibold text-ink">Compact task board, quick capture, and lightweight account settings.</p>
             </div>
-            <div style="margin-bottom: 10px;">
-                <label for="password">Password:</label><br>
-                <input type="password" id="password" name="password" required>
+            <div class="rounded-2xl border border-line bg-white p-4">
+              <p class="text-sm text-muted">Security</p>
+              <p class="mt-1 font-semibold text-ink">JWT access tokens with refresh-based session continuation.</p>
             </div>
-            <div style="text-align: center;">
-                <button type="submit" style="background-color: white; color: black; padding: 5px 10px; border: none; cursor: pointer;">Login</button>
+          </div>
+        </div>
+
+        <div class="rounded-[2rem] border border-line bg-panel p-6 shadow-panel sm:p-8">
+          <div class="flex items-center justify-between">
+            <div>
+              <h2 class="text-2xl font-bold text-ink">Sign in</h2>
+              <p class="mt-1 text-sm text-muted">Use your account to enter the workspace.</p>
             </div>
-        </form>
-        <br>
-        <p>click here for password..</p>
-        <a href="/api/auth/reset">forgot password</a>
-        <hr>
-        <p>click here for register..</p>
-        <a href="/api/auth/register">signup</a>
-    
-</body>
+            <span class="rounded-full bg-stone-100 px-3 py-1 text-xs font-semibold text-muted">TaskFlow</span>
+          </div>
+
+          <%- include("../partials/flash", { message, error }) %>
+
+          <form action="/auth/login" method="POST" class="mt-6 space-y-5">
+            <div>
+              <label for="email" class="mb-2 block text-sm font-medium text-muted">Email</label>
+              <input
+                id="email"
+                name="email"
+                type="email"
+                value="<%= values?.email || '' %>"
+                required
+                class="w-full rounded-2xl border border-line bg-white px-4 py-3 text-ink outline-none transition focus:border-stone-500"
+              />
+            </div>
+            <div>
+              <label for="password" class="mb-2 block text-sm font-medium text-muted">Password</label>
+              <input
+                id="password"
+                name="password"
+                type="password"
+                required
+                class="w-full rounded-2xl border border-line bg-white px-4 py-3 text-ink outline-none transition focus:border-stone-500"
+              />
+            </div>
+            <button type="submit" class="w-full rounded-2xl bg-stone-900 px-5 py-3 font-semibold text-stone-50 transition hover:bg-stone-700">
+              Sign in
+            </button>
+          </form>
+
+          <p class="mt-6 text-sm text-muted">
+            Need an account?
+            <a href="/auth/register" class="font-semibold text-ink underline decoration-stone-300 underline-offset-4">Create one here</a>
+          </p>
+        </div>
+      </section>
+    </main>
+  </body>
 </html>

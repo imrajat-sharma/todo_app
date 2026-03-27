@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <%- include("partials/head", { title }) %>
+  </head>
+  <body class="flex min-h-screen items-center justify-center bg-canvas px-6 text-ink">
+    <div class="w-full max-w-xl rounded-[2rem] border border-line bg-panel p-10 text-center shadow-panel">
+      <p class="text-sm font-semibold uppercase tracking-[0.3em] text-muted">404</p>
+      <h1 class="mt-4 text-4xl font-extrabold text-ink">The page you requested could not be found.</h1>
+      <p class="mt-4 text-muted"><%= message %></p>
+      <a href="<%= currentUser ? '/dashboard' : '/' %>" class="mt-8 inline-flex rounded-2xl bg-stone-900 px-5 py-3 font-semibold text-stone-50 transition hover:bg-stone-700">
+        Go back
+      </a>
+    </div>
+  </body>
+</html>

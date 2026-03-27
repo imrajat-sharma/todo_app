@@ -1,14 +1,21 @@
-const app = require("./app");
 require("dotenv").config();
+
+const app = require("./app");
 const connectDB = require("./src/config/db");
 
-connectDB()
-  .then(() => {
-    app.listen(process.env.PORT || 3000, (req, res) => {
-      console.log(`Server is running at port ${process.env.PORT || 3000}`);
-    });
-  })
-  .catch((err) => {
-    console.error("Failed to connect to the database:", err.message);
-  });
+const PORT = Number(process.env.PORT) || 3000;
 
+const bootstrap = async () => {
+  try {
+    await connectDB();
+
+    app.listen(PORT, () => {
+      console.log(`Server is running on port ${PORT}`);
+    });
+  } catch (error) {
+    console.error("Failed to start application:", error.message);
+    process.exit(1);
+  }
+};
+
+bootstrap();

@@ -1,69 +1,102 @@
 const mongoose = require("mongoose");
-const bcryptjs = require("bcryptjs");
+const bcrypt = require("bcryptjs");
+
+const refreshTokenSchema = new mongoose.Schema(
+  {
+    tokenHash: {
+      type: String,
+      required: true,
+    },
+    expiresAt: {
+      type: Date,
+      required: true,
+    },
+  },
+  { _id: false },
+);
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
-      minlength: [2, "Your name is too small."],
-      maxlength: [16, "Name shouldn't be more than 16 character"],
+      required: [true, "Name is required"],
+      trim: true,
+      minlength: [2, "Name must be at least 2 characters long"],
+      maxlength: [40, "Name cannot exceed 40 characters"],
     },
     username: {
       type: String,
       required: [true, "Username is required"],
       trim: true,
-      unique: [true, "Username already exist"],
-      match: [/^[a-zA-Z0-9_-]{3,16}$/, "Please fill a valid username"],
+      lowercase: true,
+      unique: true,
+      minlength: [3, "Username must be at least 3 characters long"],
+      maxlength: [20, "Username cannot exceed 20 characters"],
+      match: [
+        /^[a-z0-9_-]+$/,
+        "Username can only contain lowercase letters, numbers, underscore, and dash",
+      ],
     },
     email: {
       type: String,
       required: [true, "Email is required"],
-      unique: [true, "Email already exist"],
       trim: true,
       lowercase: true,
-      match: [/\S+@\S+\.\S+/, "Please fill a valid email address"],
+      unique: true,
+      match: [/\S+@\S+\.\S+/, "Please provide a valid email address"],
     },
     password: {
       type: String,
       required: [true, "Password is required"],
-      minlength: [6, "Password must be at least 6 characters long"],
+      minlength: [8, "Password must be at least 8 characters long"],
+      select: false,
     },
     role: {
       type: String,
       enum: ["user", "admin"],
       default: "user",
     },
-    profileImage: {          
+    profileImage: {
       type: String,
-      default: null
-    }
+      default: null,
+    },
+    refreshTokens: {
+      type: [refreshTokenSchema],
+      default: [],
+      select: false,
+    },
   },
   {
     timestamps: true,
   },
 );
 
-userSchema.pre("save", async function () {
+userSchema.pre("save", async function savePassword() {
   if (!this.isModified("password")) {
     return;
   }
 
-  try {
-    const salt = await bcryptjs.genSalt(10);
-    const hash = await bcryptjs.hash(this.password, salt);
-    this.password = hash;
- 
-  } catch (err) {
-    throw new Error("Error hashing the password");
-  }
+  const salt = await bcrypt.genSalt(12);
+  this.password = await bcrypt.hash(this.password, salt);
 });
 
+userSchema.methods.comparePassword = function comparePassword(
+  candidatePassword,
+) {
+  return bcrypt.compare(candidatePassword, this.password);
+};
 
+userSchema.methods.toSafeObject = function toSafeObject() {
+  return {
+    id: this._id.toString(),
+    name: this.name,
+    username: this.username,
+    email: this.email,
+    role: this.role,
+    profileImage: this.profileImage,
+    createdAt: this.createdAt,
+    updatedAt: this.updatedAt,
+  };
+};
 
-userSchema.methods.comparePassword = async function(plainPassword) {
-    return await bcryptjs.compare(plainPassword,this.password)
-}
-
-const User = mongoose.model('User',userSchema);
-
-module.exports = User;
+module.exports = mongoose.model("User", userSchema);

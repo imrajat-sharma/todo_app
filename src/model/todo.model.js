@@ -6,20 +6,37 @@ const todoSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+      index: true,
     },
     title: {
       type: String,
       required: [true, "Title is required"],
       trim: true,
+      maxlength: [120, "Title cannot exceed 120 characters"],
     },
     description: {
       type: String,
       trim: true,
+      maxlength: [500, "Description cannot exceed 500 characters"],
       default: "",
     },
-    completed: {
-      type: Boolean,
-      default: false,
+    status: {
+      type: String,
+      enum: ["pending", "in_progress", "completed"],
+      default: "pending",
+    },
+    priority: {
+      type: String,
+      enum: ["low", "medium", "high"],
+      default: "medium",
+    },
+    dueDate: {
+      type: Date,
+      default: null,
+    },
+    completedAt: {
+      type: Date,
+      default: null,
     },
   },
   {
@@ -27,6 +44,10 @@ const todoSchema = new mongoose.Schema(
   },
 );
 
-const Todo = mongoose.model("Todo", todoSchema);
+todoSchema.index({ userId: 1, status: 1, priority: 1, createdAt: -1 });
 
-module.exports = Todo;
+todoSchema.pre("save", async function syncCompletion() {
+  this.completedAt = this.status === "completed" ? this.completedAt || new Date() : null;
+});
+
+module.exports = mongoose.model("Todo", todoSchema);
