@@ -33,13 +33,14 @@ const buildTodoFilters = (userId, query) => {
 const renderDashboard = asyncHandler(async (req, res) => {
   const { filters, mongoFilter } = buildTodoFilters(req.user.id, req.query);
 
-  const [todos, totalTodos, completedTodos, inProgressTodos, pendingTodos] = await Promise.all([
-    Todo.find(mongoFilter).sort({ createdAt: -1 }).lean(),
-    Todo.countDocuments({ userId: req.user.id }),
-    Todo.countDocuments({ userId: req.user.id, status: "completed" }),
-    Todo.countDocuments({ userId: req.user.id, status: "in_progress" }),
-    Todo.countDocuments({ userId: req.user.id, status: "pending" }),
-  ]);
+  const [todos, totalTodos, completedTodos, inProgressTodos, pendingTodos] =
+    await Promise.all([
+      Todo.find(mongoFilter).sort({ createdAt: -1 }).lean(),
+      Todo.countDocuments({ userId: req.user.id }),
+      Todo.countDocuments({ userId: req.user.id, status: "completed" }),
+      Todo.countDocuments({ userId: req.user.id, status: "in_progress" }),
+      Todo.countDocuments({ userId: req.user.id, status: "pending" }),
+    ]);
 
   return res.render("dashboard/index", {
     title: "Dashboard",
@@ -53,7 +54,9 @@ const renderDashboard = asyncHandler(async (req, res) => {
       completed: completedTodos,
       inProgress: inProgressTodos,
       pending: pendingTodos,
-      completionRate: totalTodos ? Math.round((completedTodos / totalTodos) * 100) : 0,
+      completionRate: totalTodos
+        ? Math.round((completedTodos / totalTodos) * 100)
+        : 0,
     },
     message: req.query.message || "",
     error: req.query.error || "",
@@ -68,11 +71,19 @@ const updateProfile = asyncHandler(async (req, res) => {
   }
 
   const name = typeof req.body.name === "string" ? req.body.name.trim() : "";
-  const username = typeof req.body.username === "string" ? req.body.username.trim().toLowerCase() : "";
-  const email = typeof req.body.email === "string" ? req.body.email.trim().toLowerCase() : "";
+  const username =
+    typeof req.body.username === "string"
+      ? req.body.username.trim().toLowerCase()
+      : "";
+  const email =
+    typeof req.body.email === "string"
+      ? req.body.email.trim().toLowerCase()
+      : "";
 
   if (!name || !username || !email) {
-    return res.redirect("/dashboard?error=Name, username, and email are required");
+    return res.redirect(
+      "/dashboard?error=Name, username, and email are required",
+    );
   }
 
   const duplicateUser = await User.findOne({
