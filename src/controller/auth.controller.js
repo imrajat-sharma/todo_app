@@ -2,9 +2,14 @@ const User = require("../model/user.model");
 const AppError = require("../utils/app-error");
 const asyncHandler = require("../utils/async-handler");
 const { clearAuthCookies, setAuthCookies } = require("../utils/cookies");
-const { generateAuthTokens, hashToken, verifyRefreshToken } = require("../utils/tokens");
+const {
+  generateAuthTokens,
+  hashToken,
+  verifyRefreshToken,
+} = require("../utils/tokens");
 
-const getTrimmedValue = (value) => (typeof value === "string" ? value.trim() : "");
+const getTrimmedValue = (value) =>
+  typeof value === "string" ? value.trim() : "";
 
 const renderAuthView = (res, view, payload = {}) =>
   res.status(payload.statusCode || 200).render(`auth/${view}`, {
@@ -40,7 +45,9 @@ const resetPage = (req, res) =>
 const createSession = async (user, res) => {
   const tokens = generateAuthTokens(user);
 
-  user.refreshTokens = user.refreshTokens || [];
+  user.refreshTokens = Array.isArray(user.refreshTokens)
+    ? user.refreshTokens
+    : [];
   user.refreshTokens = user.refreshTokens
     .filter((token) => token.expiresAt > new Date())
     .slice(-4)
@@ -89,7 +96,10 @@ const register = asyncHandler(async (req, res) => {
       title: "Create account",
       currentPath: "/auth/register",
       statusCode: 409,
-      error: existingUser.email === email ? "Email already exists." : "Username already exists.",
+      error:
+        existingUser.email === email
+          ? "Email already exists."
+          : "Username already exists.",
       values: { name, username, email },
     });
   }
@@ -165,8 +175,7 @@ const logout = asyncHandler(async (req, res) => {
         );
         await user.save();
       }
-    } catch (error) {
-    }
+    } catch (error) {}
   }
 
   clearAuthCookies(res);
@@ -187,8 +196,12 @@ const refreshSession = asyncHandler(async (req, res) => {
     throw new AppError("Session not found", 401);
   }
 
-  const activeTokens = (user.refreshTokens || []).filter((token) => token.expiresAt > new Date());
-  const matchedToken = activeTokens.find((token) => token.tokenHash === hashToken(refreshToken));
+  const activeTokens = (user.refreshTokens || []).filter(
+    (token) => token.expiresAt > new Date(),
+  );
+  const matchedToken = activeTokens.find(
+    (token) => token.tokenHash === hashToken(refreshToken),
+  );
 
   if (!matchedToken) {
     clearAuthCookies(res);
@@ -230,7 +243,9 @@ const updatePassword = asyncHandler(async (req, res) => {
     return res.redirect("/dashboard?error=New passwords do not match");
   }
 
-  const user = await User.findById(req.user.id).select("+password +refreshTokens");
+  const user = await User.findById(req.user.id).select(
+    "+password +refreshTokens",
+  );
 
   if (!user) {
     throw new AppError("User not found", 404);
